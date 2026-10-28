@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Leave a note for Fran</title>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Jost:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --peach: #FAD9C3;
+    --peach-light: #FDEBDD;
+    --burgundy: #5A0F1F;
+    --crimson: #C42A4A;
+    --coral: #D9515A;
+    --orange: #E8A33D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--crimson);
+    font-family: 'Jost', sans-serif;
+    color: var(--burgundy);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem;
+  }
+
+  .card {
+    background: var(--peach);
+    border-radius: 28px;
+    width: 100%;
+    max-width: 480px;
+    padding: 2.5rem 1.75rem 2rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  /* decorative blobs */
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  .card::before {
+    width: 220px; height: 220px;
+    background: var(--coral);
+    opacity: 0.35;
+    top: -90px; left: -90px;
+  }
+  .card::after {
+    width: 200px; height: 200px;
+    background: var(--crimson);
+    opacity: 0.3;
+    bottom: -90px; right: -80px;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  .rays {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 0.75rem;
+  }
+  .rays span {
+    width: 5px; height: 22px;
+    background: var(--orange);
+    border-radius: 4px;
+  }
+  .rays span:nth-child(1) { transform: rotate(-30deg); }
+  .rays span:nth-child(2) { transform: rotate(-12deg); height: 26px; }
+  .rays span:nth-child(3) { transform: rotate(12deg); height: 26px; }
+  .rays span:nth-child(4) { transform: rotate(30deg); }
+
+  h1 {
+    font-family: 'Chewy', cursive;
+    font-weight: 400;
+    font-size: clamp(38px, 11vw, 54px);
+    line-height: 1;
+    color: var(--burgundy);
+    text-transform: uppercase;
+  }
+
+  h1 .big {
+    display: block;
+    font-size: clamp(72px, 22vw, 108px);
+    color: var(--coral);
+    line-height: 0.95;
+  }
+
+  .heart {
+    display: block;
+    font-size: 26px;
+    color: var(--crimson);
+    margin: 0.5rem 0 0.75rem;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.9;
+    margin-bottom: 1.75rem;
+  }
+
+  form { text-align: left; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--burgundy);
+  }
+
+  input, textarea {
+    width: 100%;
+    background: var(--peach-light);
+    border: 2px solid rgba(90,15,31,0.15);
+    border-radius: 14px;
+    padding: 13px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 16px;
+    color: var(--burgundy);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 1.1rem;
+  }
+
+  textarea { resize: vertical; min-height: 130px; }
+
+  input::placeholder, textarea::placeholder { color: rgba(90,15,31,0.4); }
+
+  input:focus, textarea:focus {
+    border-color: var(--coral);
+    box-shadow: 0 0 0 4px rgba(217,81,90,0.18);
+  }
+
+  button {
+    width: 100%;
+    background: var(--burgundy);
+    color: var(--peach-light);
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    font-family: 'Chewy', cursive;
+    font-size: 22px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  button:hover { background: var(--crimson); }
+  button:active { transform: scale(0.98); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .squiggle {
+    display: block;
+    width: 70px; height: 8px;
+    margin: 1.75rem auto 0;
+    background: var(--orange);
+    border-radius: 8px;
+  }
+
+  /* thank you state */
+  .thanks { display: none; padding: 1rem 0 0.5rem; }
+  .thanks.show { display: block; animation: fadeUp 0.5s ease both; }
+  .thanks h2 {
+    font-family: 'Chewy', cursive;
+    font-weight: 400;
+    font-size: 44px;
+    color: var(--coral);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+  .thanks p { font-size: 16px; line-height: 1.6; margin-bottom: 1.5rem; }
+  .again {
+    background: transparent;
+    color: var(--burgundy);
+    border: 2px solid var(--burgundy);
+    font-size: 18px;
+    padding: 12px;
+  }
+  .again:hover { background: var(--burgundy); color: var(--peach-light); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="content">
+
+    <div class="rays"><span></span><span></span><span></span><span></span></div>
+
+    <h1>Leave a <span class="big">Note</span> for Fran</h1>
+    <span class="heart">♡</span>
+    <p class="subtitle">A memory, a piece of advice,<br>a fun story or just a few kind words.</p>
+
+    <form id="form" onsubmit="enviar(event)">
+      <label for="f-name">Your name</label>
+      <input type="text" id="f-name" placeholder="Who is this from?" autocomplete="name" required />
+
+      <label for="f-msg">Your message</label>
+      <textarea id="f-msg" placeholder="Write your note here..." required></textarea>
+
+      <button type="submit" id="btn">Send my note</button>
+    </form>
+
+    <div class="thanks" id="thanks">
+      <h2>Thank you!</h2>
+      <p>Your note was sent to Fran 💛<br>It means a lot.</p>
+      <button class="again" type="button" onclick="novo()">Write another</button>
+    </div>
+
+    <span class="squiggle"></span>
+  </div>
+</div>
+
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxXPi-7UE_YLYhcaDGTx58aaahiHd-WmUb-0jCZenAWU4EbeA1SlJJa7a4JtQgluFs_2Q/exec';
+
+  async function enviar(e) {
+    e.preventDefault();
+    const nome = document.getElementById('f-name').value.trim();
+    const mensagem = document.getElementById('f-msg').value.trim();
+    const btn = document.getElementById('btn');
+
+    if (!nome || !mensagem) return;
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ nome, mensagem })
+      });
+
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('thanks').classList.add('show');
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+    } finally {
+      btn.textContent = 'Send my note';
+      btn.disabled = false;
+    }
+  }
+
+  function novo() {
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-msg').value = '';
+    document.getElementById('thanks').classList.remove('show');
+    document.getElementById('form').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
